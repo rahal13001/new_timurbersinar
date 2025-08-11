@@ -16,19 +16,19 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class UptResource extends Resource
 {
     protected static ?string $model = Upt::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Data Dasar';
+    protected static ?string $navigationIcon = 'heroicon-m-building-office';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('code')
-                    ->name('Kode UPT')
+                    ->label('Kode UPT')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('name')
-                    ->name('Nama UPT')
+                    ->label('Nama UPT')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -39,8 +39,10 @@ class UptResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('code')
+                    ->label('Kode UPT')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama UPT')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -70,5 +72,17 @@ class UptResource extends Resource
         return [
             'index' => Pages\ManageUpts::route('/'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return "UPT";
+        }
+        else
+        {
+            return "UPT";
+        }
     }
 }
