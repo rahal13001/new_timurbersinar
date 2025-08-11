@@ -16,16 +16,17 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CityResource extends Resource
 {
     protected static ?string $model = City::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Data Dasar';
+    protected static ?string $navigationIcon = 'phosphor-city';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('province_id')
+                Forms\Components\Select::make('province_id')
+                    ->label('Provinsi')
                     ->required()
-                    ->numeric(),
+                    ->relationship('province', 'name'),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -36,10 +37,12 @@ class CityResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('province_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('province.name')
+                    ->searchable()
+                    ->label('Provinsi')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Kota / Kabupaten')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -69,5 +72,17 @@ class CityResource extends Resource
         return [
             'index' => Pages\ManageCities::route('/'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return "Kota";
+        }
+        else
+        {
+            return "City";
+        }
     }
 }
