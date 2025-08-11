@@ -16,17 +16,19 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class QuotaSourceResource extends Resource
 {
     protected static ?string $model = QuotaSource::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Data Dasar';
+    protected static ?string $navigationIcon = 'phosphor-fish-fill';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Asal Kuota')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('year'),
+                Forms\Components\TextInput::make('year')
+                    ->label('Tahun'),
             ]);
     }
 
@@ -65,5 +67,17 @@ class QuotaSourceResource extends Resource
         return [
             'index' => Pages\ManageQuotaSources::route('/'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return "Sumber Kuota";
+        }
+        else
+        {
+            return "Quota Source";
+        }
     }
 }
