@@ -17,7 +17,8 @@ class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Data Dasar';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {
@@ -25,10 +26,16 @@ class PartnerResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->label('Nama Pelaku Usaha')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('type')
+                Forms\Components\Select::make('type')
+                    ->label('Bentuk Usaha')
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                            'Perseorangan' => 'Perseorangan',
+                            'Perusahaan' => 'Perusahaan',
+                     ]
+                    ),
             ]);
     }
 
@@ -37,8 +44,10 @@ class PartnerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label('Bentuk Usaha')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -68,5 +77,17 @@ class PartnerResource extends Resource
         return [
             'index' => Pages\ManagePartners::route('/'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return "Pelaku Usaha";
+        }
+        else
+        {
+            return "Partner";
+        }
     }
 }
