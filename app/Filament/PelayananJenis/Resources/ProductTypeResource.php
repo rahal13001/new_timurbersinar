@@ -17,13 +17,15 @@ class ProductTypeResource extends Resource
 {
     protected static ?string $model = ProductType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Data Dasar';
+    protected static ?string $navigationIcon = 'phosphor-fish-simple-duotone';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Bentuk Produk')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -34,6 +36,7 @@ class ProductTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Bentuk Produk')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -63,5 +66,17 @@ class ProductTypeResource extends Resource
         return [
             'index' => Pages\ManageProductTypes::route('/'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return "Tipe Produk";
+        }
+        else
+        {
+            return "Product Type";
+        }
     }
 }
