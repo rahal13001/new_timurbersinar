@@ -26,4 +26,10 @@ class ServiceDocument extends Model
             'billing_code'
 
         ];
+
+    public function documentType(){
+        return $this->belongsTo(DocumentType::class);
+    }
+
+
 }
