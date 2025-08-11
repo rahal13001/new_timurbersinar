@@ -17,13 +17,16 @@ class DocumentTypeResource extends Resource
 {
     protected static ?string $model = DocumentType::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Data Dasar';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nama')
+                    ->unique()
                     ->required()
                     ->maxLength(255),
             ]);
@@ -34,6 +37,7 @@ class DocumentTypeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -63,5 +67,16 @@ class DocumentTypeResource extends Resource
         return [
             'index' => Pages\ManageDocumentTypes::route('/'),
         ];
+    }
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return "Tipe Dokumen";
+        }
+        else
+        {
+            return "Document Type";
+        }
     }
 }
