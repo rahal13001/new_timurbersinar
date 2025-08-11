@@ -17,17 +17,22 @@ class FishSpeciesResource extends Resource
 {
     protected static ?string $model = FishSpecies::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Data Dasar';
+    protected static ?string $navigationIcon = 'phosphor-fish-bold';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('scientific_name')
+                    ->label('Nama Ilmiah')
+                    ->unique()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('common_name')
+                    ->label('Nama Lokal')
                     ->maxLength(255),
+
             ]);
     }
 
@@ -36,8 +41,10 @@ class FishSpeciesResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('scientific_name')
+                    ->label('Nama Ilmiah')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('common_name')
+                    ->label('Nama Lokal')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -67,5 +74,17 @@ class FishSpeciesResource extends Resource
         return [
             'index' => Pages\ManageFishSpecies::route('/'),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return "Jenis Ikan";
+        }
+        else
+        {
+            return "Fish Species";
+        }
     }
 }
