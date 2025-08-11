@@ -17,13 +17,15 @@ class ProvinceResource extends Resource
 {
     protected static ?string $model = Province::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Data Dasar';
+    protected static ?string $navigationIcon = 'phosphor-city-fill';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nama Provinsi')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -34,6 +36,7 @@ class ProvinceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama Provinsi')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -63,5 +66,16 @@ class ProvinceResource extends Resource
         return [
             'index' => Pages\ManageProvinces::route('/'),
         ];
+    }
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+        if ($locale === 'id') {
+            return "Provinsi";
+        }
+        else
+        {
+            return "Province";
+        }
     }
 }
